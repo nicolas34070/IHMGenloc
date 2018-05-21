@@ -5,6 +5,10 @@
  */
 package ihm;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Nico
@@ -14,8 +18,11 @@ public class Accueil extends javax.swing.JFrame {
     /**
      * Creates new form Accueil
      */
+    private boolean etatClientTCP;
+
     public Accueil() {
         initComponents();
+        etatClientTCP = false;
     }
 
     /**
@@ -49,9 +56,14 @@ public class Accueil extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel3.setText("Appuyez sur le bouton pour lancer/arrêter le serveur TCP");
+        jLabel3.setText("Appuyez sur le bouton pour lancer/arrêter le client TCP");
 
         jButton2.setText("Press");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Serveur arrêté");
 
@@ -208,6 +220,33 @@ public class Accueil extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(822, 493));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        clientTCP leClient = null;
+        try {
+            leClient = new clientTCP();
+        } catch (IOException ex) {
+            Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (etatClientTCP == false) {
+            try {
+                leClient.demarrageClient();
+                jLabel2.setText("Serveur démarré");
+                etatClientTCP = true;
+            } catch (IOException ex) {
+                Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                leClient.fermerClient();
+                etatClientTCP = false;
+            } catch (IOException ex) {
+                Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
