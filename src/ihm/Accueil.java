@@ -6,6 +6,7 @@
 package ihm;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,10 +20,17 @@ public class Accueil extends javax.swing.JFrame {
      * Creates new form Accueil
      */
     private boolean etatClientTCP;
+    private clientTCP leClient;
 
     public Accueil() {
         initComponents();
         etatClientTCP = false;
+
+        try {
+            leClient = new clientTCP();
+        } catch (IOException ex) {
+            Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -65,7 +73,7 @@ public class Accueil extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Serveur arrêté");
+        jLabel2.setText("Client arreté");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -98,8 +106,18 @@ public class Accueil extends javax.swing.JFrame {
         jLabel4.setText("Gestion de la LED");
 
         jButton1.setText("Allumer LED");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Eteindre LED");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -223,16 +241,11 @@ public class Accueil extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        clientTCP leClient = null;
-        try {
-            leClient = new clientTCP();
-        } catch (IOException ex) {
-            Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
-        }
+
         if (etatClientTCP == false) {
             try {
                 leClient.demarrageClient();
-                jLabel2.setText("Serveur démarré");
+                jLabel2.setText("client connecté");
                 etatClientTCP = true;
             } catch (IOException ex) {
                 Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
@@ -240,6 +253,7 @@ public class Accueil extends javax.swing.JFrame {
         } else {
             try {
                 leClient.fermerClient();
+                jLabel2.setText("Client arrêté");
                 etatClientTCP = false;
             } catch (IOException ex) {
                 Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
@@ -247,6 +261,38 @@ public class Accueil extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        String message_Allumer_LED_3 = "AT+GPIOEXTSET=57,1\n";
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(leClient.getSocket().getOutputStream());
+        } catch (IOException ex) {
+            Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        out.println(message_Allumer_LED_3);
+        out.flush();
+
+        System.out.println("Led Allumée");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        String message_Eteindre_LED_3 = "AT+GPIOEXTSET=57,0\n";
+
+        PrintWriter out = null;
+        try {
+            out = new PrintWriter(leClient.getSocket().getOutputStream());
+        } catch (IOException ex) {
+            Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        out.println(message_Eteindre_LED_3);
+        out.flush();
+        System.out.println("Led Eteinte");
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

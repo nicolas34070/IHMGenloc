@@ -146,7 +146,7 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Serveur arr&#xea;t&#xe9;"/>
+                <Property name="text" type="java.lang.String" value="Client arret&#xe9;"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -198,11 +198,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Allumer LED"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButton3">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Eteindre LED"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
