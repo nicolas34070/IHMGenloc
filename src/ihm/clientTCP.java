@@ -24,23 +24,31 @@ public class clientTCP {
 
     public clientTCP() throws IOException {
         etatClient = false;
-        this.demarrageClient();
+        //  this.demarrageClient();
     }
 
     public void demarrageClient() throws IOException {
 
-       
-            socket = new Socket("192.168.1.83", 1234);
-            System.out.println("Connexion effectuée");
+        socket = new Socket("192.168.1.45", 1234);
+        System.out.println("Connexion effectuée");
 
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream());
-            etatClient = true;
+        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out = new PrintWriter(socket.getOutputStream());
+        etatClient = true;
     }
 
     public void fermerClient() throws IOException {
-        socket.close();
-        etatClient = false;
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                try {
+                    socket.close();
+                    System.out.println("The server is shut down!");
+                    etatClient = false;
+                } catch (IOException e) {
+                    /* failed */ }
+            }
+        });
     }
 
 }
