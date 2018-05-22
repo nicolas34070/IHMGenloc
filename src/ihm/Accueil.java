@@ -51,6 +51,7 @@ public class Accueil extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -66,7 +67,7 @@ public class Accueil extends javax.swing.JFrame {
 
         jLabel3.setText("Appuyez sur le bouton pour lancer/arrêter le client TCP");
 
-        jButton2.setText("Press");
+        jButton2.setText("Se connecter");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -119,6 +120,8 @@ public class Accueil extends javax.swing.JFrame {
             }
         });
 
+        jLabel7.setText("LED éteinte");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -134,6 +137,10 @@ public class Accueil extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(178, 178, 178))))
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(172, 172, 172)
+                .addComponent(jLabel7)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,7 +151,9 @@ public class Accueil extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton3))
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addComponent(jLabel7)
+                .addContainerGap())
         );
 
         jLabel5.setText("Messages du GenLoc");
@@ -246,6 +255,7 @@ public class Accueil extends javax.swing.JFrame {
             try {
                 leClient.demarrageClient();
                 jLabel2.setText("client connecté");
+                jButton2.setText("Se déconnecter");
                 etatClientTCP = true;
             } catch (IOException ex) {
                 Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
@@ -254,6 +264,7 @@ public class Accueil extends javax.swing.JFrame {
             try {
                 leClient.fermerClient();
                 jLabel2.setText("Client arrêté");
+                jButton2.setText("Se connecter");
                 etatClientTCP = false;
             } catch (IOException ex) {
                 Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
@@ -274,7 +285,7 @@ public class Accueil extends javax.swing.JFrame {
 
         out.println(message_Allumer_LED_3);
         out.flush();
-
+        jLabel7.setText("LED allumée");
         System.out.println("Led Allumée");
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -291,6 +302,7 @@ public class Accueil extends javax.swing.JFrame {
 
         out.println(message_Eteindre_LED_3);
         out.flush();
+        jLabel7.setText("LED éteinte");
         System.out.println("Led Eteinte");
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -339,6 +351,7 @@ public class Accueil extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
