@@ -17,6 +17,8 @@ import java.net.Socket;
  */
 public class clientTCP {
 
+
+
     private boolean etatClient;
     private Socket socket;
     private BufferedReader in;
@@ -29,26 +31,36 @@ public class clientTCP {
 
     public void demarrageClient() throws IOException {
 
-        socket = new Socket("192.168.1.45", 1234);
+        setSocket(new Socket("192.168.0.55", 1234));
         System.out.println("Connexion effectuée");
 
-        in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream());
+        in = new BufferedReader(new InputStreamReader(getSocket().getInputStream()));
+        out = new PrintWriter(getSocket().getOutputStream());
         etatClient = true;
     }
 
     public void fermerClient() throws IOException {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
+
                 try {
-                    socket.close();
+                    getSocket().close();
                     System.out.println("The server is shut down!");
                     etatClient = false;
                 } catch (IOException e) {
                     /* failed */ }
-            }
-        });
+    }
+    
+        /**
+     * @return the socket
+     */
+    public Socket getSocket() {
+        return socket;
+    }
+
+    /**
+     * @param socket the socket to set
+     */
+    public void setSocket(Socket socket) {
+        this.socket = socket;
     }
 
 }
