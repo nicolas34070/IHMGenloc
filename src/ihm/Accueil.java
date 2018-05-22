@@ -107,6 +107,7 @@ public class Accueil extends javax.swing.JFrame {
         jLabel4.setText("Gestion de la LED");
 
         jButton1.setText("Allumer LED");
+        jButton1.setEnabled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -114,6 +115,7 @@ public class Accueil extends javax.swing.JFrame {
         });
 
         jButton3.setText("Eteindre LED");
+        jButton3.setEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -256,6 +258,8 @@ public class Accueil extends javax.swing.JFrame {
                 leClient.demarrageClient();
                 jLabel2.setText("client connecté");
                 jButton2.setText("Se déconnecter");
+                jButton1.setEnabled(true);
+                jButton3.setEnabled(true);
                 etatClientTCP = true;
             } catch (IOException ex) {
                 Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
@@ -265,6 +269,8 @@ public class Accueil extends javax.swing.JFrame {
                 leClient.fermerClient();
                 jLabel2.setText("Client arrêté");
                 jButton2.setText("Se connecter");
+                jButton1.setEnabled(false);
+                jButton3.setEnabled(false);
                 etatClientTCP = false;
             } catch (IOException ex) {
                 Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
