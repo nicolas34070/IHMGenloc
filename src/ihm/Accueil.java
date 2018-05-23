@@ -9,10 +9,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import static java.lang.System.in;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JLabel;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 /**
  *
@@ -349,13 +349,12 @@ public class Accueil extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        if (etatReceptionMessages == false) {
-            jButton4.setText("Arrêter réception");
 
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        String messageRecu = "bonjour\n";
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    if (etatReceptionMessages == false) {
+                        jButton4.setText("Arrêter réception");
 
                         BufferedReader in;
 
@@ -363,24 +362,41 @@ public class Accueil extends javax.swing.JFrame {
 
                         System.out.println("reception des messages...");
 
-                        //messageRecu = in.readLine();
+                        Thread t = new Thread(new Runnable() {
+                            public void run() {
+                                try {
+                                    String messageRecu;
+                                    messageRecu = in.readLine();
+                                    System.out.println("Received from  server: " + messageRecu);
 
-                        System.out.println("Received from  server: " + messageRecu);
+                                    jTextArea1.setText(messageRecu + jTextArea1.getText());
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                            }
+                        });
+                        if (SwingUtilities.isEventDispatchThread()) {
+                            t.start();
+                        } else {
+                            System.out.println("Lancement dans l' EDT");
+                            SwingUtilities.invokeLater(t);
+                        }
 
-                        jTextArea1.setText(messageRecu + jTextArea1.getText());
+                        etatReceptionMessages = true;
+                    } else {
+                        jButton4.setText("Reçevoir messsages");
 
-                    } catch (IOException ex) {
-                        Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+                        etatReceptionMessages = false;
                     }
+
+                } catch (IOException ex) {
+                    Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }).start();
-
-            etatReceptionMessages = true;
-        } else {
-            jButton4.setText("Reçevoir messsages");
-
-            etatReceptionMessages = false;
+            }
         }
+        ).start();
+
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
