@@ -350,54 +350,77 @@ public class Accueil extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
 
-        new Thread(new Runnable() {
+        //new Thread(new Runnable() {
+        //    public void run() {
+                if (etatReceptionMessages == false) {
+
+//                    Thread t = new Thread(new Runnable() {
+//                        public void run() {
+//                            try {
+//                                jButton4.setText("Arrêter réception");
+//
+//                                BufferedReader in;
+//
+//                                in = new BufferedReader(new InputStreamReader(leClient.getSocket().getInputStream()));
+//
+//                                System.out.println("reception des messages...");
+//
+//                                String messageRecu;
+//                                messageRecu = in.readLine();
+//                                System.out.println("Received from  server: " + messageRecu);
+//
+//                                jTextArea1.append(messageRecu + '\n');
+//
+//                            } catch (IOException ex) {
+//                                Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+//                            }
+//                        }
+//                    });
+//                    if (SwingUtilities.isEventDispatchThread()) {
+//                        t.start();
+//                    } else {
+//                        System.out.println("Lancement dans l' EDT");
+//                        SwingUtilities.invokeLater(t);
+//                    }
+                    printLog();
+                    etatReceptionMessages = true;
+                } else {
+                    jButton4.setText("Reçevoir messsages");
+
+                    etatReceptionMessages = false;
+                }
+           // }
+      //  }
+    //    ).start();
+    
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void printLog() {
+        Thread thread = new Thread(new Runnable() {
+            @Override
             public void run() {
-                try {
-                    if (etatReceptionMessages == false) {
-                        jButton4.setText("Arrêter réception");
-
-                        BufferedReader in;
-
+                while (true) {
+                    jButton4.setText("Arrêter réception");
+                    BufferedReader in = null;
+                    try {
                         in = new BufferedReader(new InputStreamReader(leClient.getSocket().getInputStream()));
-
-                        System.out.println("reception des messages...");
-
-                        Thread t = new Thread(new Runnable() {
-                            public void run() {
-                                try {
-                                    String messageRecu;
-                                    messageRecu = in.readLine();
-                                    System.out.println("Received from  server: " + messageRecu);
-
-                                    jTextArea1.setText(messageRecu + jTextArea1.getText());
-                                } catch (IOException ex) {
-                                    Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        });
-                        if (SwingUtilities.isEventDispatchThread()) {
-                            t.start();
-                        } else {
-                            System.out.println("Lancement dans l' EDT");
-                            SwingUtilities.invokeLater(t);
-                        }
-
-                        etatReceptionMessages = true;
-                    } else {
-                        jButton4.setText("Reçevoir messsages");
-
-                        etatReceptionMessages = false;
+                    } catch (IOException ex) {
+                        Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
                     }
-
-                } catch (IOException ex) {
-                    Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("reception des messages...");
+                    String messageRecu = null;
+                    try {
+                        messageRecu = in.readLine();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    System.out.println("Received from  server: " + messageRecu);
+                    jTextArea1.append(messageRecu + '\n');
                 }
             }
-        }
-        ).start();
-
-
-    }//GEN-LAST:event_jButton4ActionPerformed
+        });
+        thread.start();
+    }
 
     /**
      * @param args the command line arguments
