@@ -63,6 +63,7 @@ public class Accueil extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jButton5 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -183,12 +184,21 @@ public class Accueil extends javax.swing.JFrame {
         jTextArea1.setEnabled(false);
         jScrollPane1.setViewportView(jTextArea1);
 
+        jButton5.setText("Effacer");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(101, Short.MAX_VALUE)
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
@@ -204,7 +214,8 @@ public class Accueil extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jButton4))
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
                 .addContainerGap())
@@ -350,50 +361,21 @@ public class Accueil extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
 
-        //new Thread(new Runnable() {
-        //    public void run() {
-                if (etatReceptionMessages == false) {
+        if (etatReceptionMessages == false) {
+            printLog();
+            etatReceptionMessages = true;
+        } else {
+            jButton4.setText("Reçevoir messsages");
 
-//                    Thread t = new Thread(new Runnable() {
-//                        public void run() {
-//                            try {
-//                                jButton4.setText("Arrêter réception");
-//
-//                                BufferedReader in;
-//
-//                                in = new BufferedReader(new InputStreamReader(leClient.getSocket().getInputStream()));
-//
-//                                System.out.println("reception des messages...");
-//
-//                                String messageRecu;
-//                                messageRecu = in.readLine();
-//                                System.out.println("Received from  server: " + messageRecu);
-//
-//                                jTextArea1.append(messageRecu + '\n');
-//
-//                            } catch (IOException ex) {
-//                                Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
-//                            }
-//                        }
-//                    });
-//                    if (SwingUtilities.isEventDispatchThread()) {
-//                        t.start();
-//                    } else {
-//                        System.out.println("Lancement dans l' EDT");
-//                        SwingUtilities.invokeLater(t);
-//                    }
-                    printLog();
-                    etatReceptionMessages = true;
-                } else {
-                    jButton4.setText("Reçevoir messsages");
+            etatReceptionMessages = false;
+        }
 
-                    etatReceptionMessages = false;
-                }
-           // }
-      //  }
-    //    ).start();
-    
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        jTextArea1.setText("");
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     private void printLog() {
         Thread thread = new Thread(new Runnable() {
@@ -409,13 +391,15 @@ public class Accueil extends javax.swing.JFrame {
                     }
                     System.out.println("reception des messages...");
                     String messageRecu = null;
+
                     try {
-                        messageRecu = in.readLine();
+                        messageRecu = in.readLine();    //Pour lire il faut envoyer à la fin du message un \n !!!!
                     } catch (IOException ex) {
                         Logger.getLogger(Accueil.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     System.out.println("Received from  server: " + messageRecu);
                     jTextArea1.append(messageRecu + '\n');
+
                 }
             }
         });
@@ -462,6 +446,7 @@ public class Accueil extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
